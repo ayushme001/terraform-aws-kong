@@ -23,4 +23,5 @@ ingress:
           httpPort: 80
           pathType: Prefix
 
+
   tls: []
