@@ -101,36 +101,36 @@ data "aws_caller_identity" "current" {}
 #   }
 # }
 
-data "aws_eks_cluster" "example" {
-  # count = var.is_enable == false ? 1 : 0
-  #depends_on = [
-  #  module.eks_cluster
-  #]
-  name = var.eks_cluster_name
-}
+# data "aws_eks_cluster" "example" {
+#   # count = var.is_enable == false ? 1 : 0
+#   #depends_on = [
+#   #  module.eks_cluster
+#   #]
+#   name = var.eks_cluster_name
+# }
 
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.example.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+# provider "kubernetes" {
+#   host                   = data.aws_eks_cluster.example.endpoint
+#   cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
 
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    command     = "aws"
-    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.id]
-  }
-}
+#   exec {
+#     api_version = "client.authentication.k8s.io/v1beta1"
+#     command     = "aws"
+#     args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.id]
+#   }
+# }
 
-provider "helm" {
-  kubernetes {
-    host                   = data.aws_eks_cluster.example.endpoint
-    cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.id]
-    }
-  }
-}
+# provider "helm" {
+#   kubernetes {
+#     host                   = data.aws_eks_cluster.example.endpoint
+#     cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
+#     exec {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       command     = "aws"
+#       args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.id]
+#     }
+#   }
+# }
 
 # provider "kubernetes" {
 #   host                   = "https://DFAE8ECA994DF269934444F0D128936D.gr7.ap-south-1.eks.amazonaws.com"
