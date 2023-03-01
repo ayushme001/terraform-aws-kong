@@ -34,41 +34,37 @@ The following content needed to be created and managed:
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_create_database"></a> [create\_database](#module\_create\_database) | git::https://github.com/tothenew/terraform-aws-rds.git | v0.0.1 |
-| <a name="module_eks_cluster"></a> [eks\_cluster](#module\_eks\_cluster) | git::https://github.com/tothenew/terraform-aws-eks.git | n/a |
-| <a name="module_load_balancer_controller"></a> [load\_balancer\_controller](#module\_load\_balancer\_controller) | git::https://github.com/tothenew/terraform-aws-eks.git//modules/terraform-aws-eks-lb-controller | n/a |
+No modules.
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [helm_release.ingress](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [helm_release.kong1](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.kong](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.konga](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_config_map.kong-config](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/config_map) | resource |
-| [kubernetes_ingress_v1.example_ingress](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/ingress_v1) | resource |
-| [kubernetes_pod.example](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod) | resource |
 | [kubernetes_pod.kong_migration](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod) | resource |
-| [kubernetes_service_v1.example](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_v1) | resource |
 | [postgresql_database.kong](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.15.0/docs/resources/database) | resource |
 | [postgresql_database.konga](https://registry.terraform.io/providers/cyrilgdn/postgresql/1.15.0/docs/resources/database) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_eks_cluster.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
 
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster | `string` | `""` | no |
+| <a name="input_kong_release_name"></a> [kong\_release\_name](#input\_kong\_release\_name) | Release name of Kong Application | `string` | `"kong"` | no |
+| <a name="input_konga_release_name"></a> [konga\_release\_name](#input\_konga\_release\_name) | Release name of Konga Application | `string` | `"konga"` | no |
+| <a name="input_rds_endpoint"></a> [rds\_endpoint](#input\_rds\_endpoint) | Endpoint of RDS  DB or Cluster | `string` | `"localhost"` | no |
+| <a name="input_rds_password"></a> [rds\_password](#input\_rds\_password) | Password of RDS  DB or Cluster | `string` | `"postgres"` | no |
+| <a name="input_rds_port"></a> [rds\_port](#input\_rds\_port) | Port of RDS  DB or Cluster | `string` | `"5432"` | no |
+| <a name="input_rds_username"></a> [rds\_username](#input\_rds\_username) | Username of RDS  DB or Cluster | `string` | `"postgres"` | no |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | The VPC Subnet IDs to launch in | `list(string)` | n/a | yes |
 
 ## Outputs
 
-No outputs.
-<!-- END_TF_DOCS -->
-
-## Authors
-
-Module managed by [TO THE NEW Pvt. Ltd.](https://github.com/tothenew)
-
-## License
-
-Apache 2 Licensed. See [LICENSE](https://github.com/tothenew/terraform-aws-template/blob/main/LICENSE) for full details.
+| Name | Description |
+|------|-------------|
+| <a name="output_data_arn"></a> [data\_arn](#output\_data\_arn) | n/a |
+| <a name="output_product_vpc"></a> [product\_vpc](#output\_product\_vpc) | n/a |

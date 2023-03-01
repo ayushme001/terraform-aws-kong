@@ -103,9 +103,9 @@ data "aws_caller_identity" "current" {}
 
 data "aws_eks_cluster" "example" {
   # count = var.is_enable == false ? 1 : 0
-  depends_on = [
-    module.eks_cluster
-  ]
+  #depends_on = [
+  #  module.eks_cluster
+  #]
   name = var.eks_cluster_name
 }
 
@@ -116,7 +116,7 @@ provider "kubernetes" {
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "aws"
-    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.cluster_name]
+    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.id]
   }
 }
 
@@ -127,7 +127,7 @@ provider "helm" {
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
-      args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.cluster_name]
+      args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.example.id]
     }
   }
 }
@@ -161,7 +161,7 @@ provider "helm" {
 #     content {
 #       host                   = module.eks_cluster.cluster_endpoint
 #       cluster_ca_certificate = base64decode(module.eks_cluster.cluster_certificate_authority_data)
-      
+
 #       exec {
 #         api_version = "client.authentication.k8s.io/v1beta1"
 #         command     = "aws"
@@ -182,7 +182,7 @@ provider "helm" {
 #     content {
 #       host                   = data.aws_eks_cluster.example.endpoint
 #       cluster_ca_certificate = base64decode(data.aws_eks_cluster.example.certificate_authority[0].data)
-      
+
 #       exec {
 #         api_version = "client.authentication.k8s.io/v1beta1"
 #         command     = "aws"
@@ -320,22 +320,22 @@ provider "helm" {
 
 
 
-module "load_balancer_controller" {
-  source = "git::https://github.com/tothenew/terraform-aws-eks.git//modules/terraform-aws-eks-lb-controller"
-
-  cluster_identity_oidc_issuer     = data.aws_eks_cluster.example.identity[0].oidc[0].issuer
-  cluster_identity_oidc_issuer_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${trimprefix(data.aws_eks_cluster.example.identity[0].oidc[0].issuer, "https://")}"
-  cluster_name                     = data.aws_eks_cluster.example.cluster_name
-  depends_on = [
-    data.aws_eks_cluster
-  ]
-  settings = {
-      image = {
-        repository = "public.ecr.aws/eks/aws-load-balancer-controller"
-        tag        = "v2.4.6"
-      }
-    }
-}
+#module "load_balancer_controller" {
+#  source = "git::https://github.com/tothenew/terraform-aws-eks.git//modules/terraform-aws-eks-lb-controller"
+#
+#  cluster_identity_oidc_issuer     = data.aws_eks_cluster.example.identity[0].oidc[0].issuer
+#  cluster_identity_oidc_issuer_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${trimprefix(data.aws_eks_cluster.example.identity[0].oidc[0].issuer, "https://")}"
+#  cluster_name                     = data.aws_eks_cluster.example.id
+  #depends_on = [
+  #  data.aws_eks_cluster
+  #]
+#  settings = {
+#      image = {
+#        repository = "public.ecr.aws/eks/aws-load-balancer-controller"
+#        tag        = "v2.4.6"
+#      }
+#    }
+#}
 
 # module "load_balancer_controller" {
 #   source = "git::https://github.com/tothenew/terraform-aws-eks.git//modules/terraform-aws-eks-lb-controller"
@@ -369,7 +369,7 @@ resource "kubernetes_config_map" "kong-config" {
   # ]
 
   data = {
-    "nginx_kong.lua" = "${file("./helm/configmap.yml")}"
+    "nginx_kong.lua" = "${file("${path.module}/helm/configmap.yml")}"
   }
 }
 
@@ -380,7 +380,7 @@ resource "helm_release" "kong" {
   name    = var.kong_release_name
   timeout = 180
   # namespace   = "default"
-  chart = "./helm/kong"
+  chart = "${path.module}/helm/kong"
   set {
     name  = "deployment.containers[0].env[1].name"
     value = "KONG_PG_HOST"
@@ -411,7 +411,7 @@ resource "helm_release" "kong" {
   }
 
   values = [
-    "${file("./helm/kong-values.yaml")}"
+    "${file("${path.module}/helm/kong-values.yaml")}"
   ]
 }
 
@@ -421,7 +421,7 @@ resource "helm_release" "konga" {
   ]
   name = var.konga_release_name
   # namespace   = "default"
-  chart   = "./helm/konga"
+  chart   = "${path.module}/helm/konga"
   timeout = 180
   set {
     name  = "deployment.containers[0].env[1].name"
@@ -452,11 +452,11 @@ resource "helm_release" "konga" {
     value = "${join("\\,", var.subnet_ids)}"
   }
   values = [
-    "${file("./helm/konga-values.yaml")}"
+    "${file("${path.module}/helm/konga-values.yaml")}"
   ]
 }
 
-# psql -h kong-database-0.c8m4uwvxecdh.ap-south-1.rds.amazonaws.com -U root postgres 
+# psql -h kong-database-0.c8m4uwvxecdh.ap-south-1.rds.amazonaws.com -U root postgres
 # b9909FTArBOsPoOlYERWC8QMex9KrIEXll
 
 # k run kong --image=saifahmadttn/kong:2.7.0 --env=KONG_PG_USER=root --env=KONG_PG_DATABASE=kong_db --env=KONG_DATABASE=postgres --env=KONG_PG_PASSWORD=b9909FTArBOsPoOlYERWC8QMex9KrIEXll --env=KONG_PG_HOST=kong-database-0.c8m4uwvxecdh.ap-south-1.rds.amazonaws.com --command -- kong migrations bootstrap
