@@ -4,7 +4,6 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
-    alb.ingress.kubernetes.io/load-balancer-name: {{ .Values.ingress.ingName }}-ingress
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnet }}
     alb.ingress.kubernetes.io/target-type: ip
