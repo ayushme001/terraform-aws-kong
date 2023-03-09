@@ -378,7 +378,7 @@ resource "helm_release" "kong" {
     resource.kubernetes_pod.kong_migration
   ]
   name    = var.kong_release_name
-  timeout = 900
+  timeout = 180
   # namespace   = "default"
   chart = "${path.module}/helm/kong"
   set {
@@ -409,7 +409,14 @@ resource "helm_release" "kong" {
     name  = "ingress.subnet"
     value = "${join("\\,", var.subnet_ids)}"
   }
-
+  set {
+    name  = "ingress.kong-sg"
+    value = "${var.kong_sg}"
+  }
+  set {
+    name  = "ingress.kong-host"
+    value = "${var.kong_host}"
+  }
   values = [
     "${file("${path.module}/helm/kong-values.yaml")}"
   ]
@@ -422,7 +429,7 @@ resource "helm_release" "konga" {
   name = var.konga_release_name
   # namespace   = "default"
   chart   = "${path.module}/helm/konga"
-  timeout = 900
+  timeout = 180
   set {
     name  = "deployment.containers[0].env[1].name"
     value = "DB_HOST"
@@ -450,6 +457,14 @@ resource "helm_release" "konga" {
   set {
     name  = "ingress.subnet"
     value = "${join("\\,", var.subnet_ids)}"
+  }
+  set {
+    name  = "ingress.kong-sg"
+    value = "${var.konga_sg}"
+  }
+  set {
+    name  = "ingress.konga-host"
+    value = "${var.konga_host}"
   }
   values = [
     "${file("${path.module}/helm/konga-values.yaml")}"
