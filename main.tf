@@ -410,11 +410,11 @@ resource "helm_release" "kong" {
     value = "${join("\\,", var.subnet_ids)}"
   }
   set {
-    name  = "ingress.kong-sg"
+    name  = "ingress.kong_sg"
     value = "${var.kong_sg}"
   }
   set {
-    name  = "ingress.kong-host"
+    name  = "ingress.kong_host"
     value = "${var.kong_host}"
   }
   values = [
@@ -459,11 +459,11 @@ resource "helm_release" "konga" {
     value = "${join("\\,", var.subnet_ids)}"
   }
   set {
-    name  = "ingress.kong-sg"
+    name  = "ingress.kong_sg"
     value = "${var.konga_sg}"
   }
   set {
-    name  = "ingress.konga-host"
+    name  = "ingress.konga_host"
     value = "${var.konga_host}"
   }
   values = [
