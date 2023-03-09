@@ -65,5 +65,5 @@ hpa:
 ingress:
   ingName: "konga-ingress"
   subnet: subnet-0257e8262a7017948,subnet-062a9cb5ea10455da,subnet-06b6a7e3c22de35ca
-  konga-sg: ""
-  konga-host: ""
+  konga_sg: ""
+  konga_host: ""
