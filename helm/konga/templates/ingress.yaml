@@ -20,10 +20,12 @@ metadata:
   namespace: {{ $.Release.Namespace }}
 spec:
   rules:
+    {{ if .Values.ingress.konga_host }}
+    - host: {{ .Values.ingress.konga_host }}
+      http:
+    {{ else }}
     - http:
-      {{ if .Values.ingress.konga_host }}
-      host: {{ .Values.ingress.konga_host }}
-      {{ end }}
+    {{ end }}
         paths:
           - path: /
             pathType: Prefix
