@@ -44,3 +44,23 @@ variable "subnet_ids" {
   description = "The VPC Subnet IDs to launch in"
   type        = list(string)
 }
+
+variable "kong_sg" {
+  description = "The security group for kong"
+  type        = string
+}
+
+variable "konga_sg" {
+  description = "The security group for konga"
+  type        = string
+}
+
+variable "kong_host" {
+  description = "The Host name for kong"
+  type        = string
+}
+
+variable "konga_host" {
+  description = "The Host name for konga"
+  type        = string
+}
