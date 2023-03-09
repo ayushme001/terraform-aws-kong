@@ -459,7 +459,7 @@ resource "helm_release" "konga" {
     value = "${join("\\,", var.subnet_ids)}"
   }
   set {
-    name  = "ingress.kong_sg"
+    name  = "ingress.konga_sg"
     value = "${var.konga_sg}"
   }
   set {
