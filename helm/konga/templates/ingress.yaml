@@ -20,15 +20,15 @@ metadata:
   namespace: {{ $.Release.Namespace }}
 spec:
   rules:
-  - http:
-    {{ if .Values.ingress.konga_host }}
-    host: {{ .Values.ingress.konga_host }}
-    {{ end }}
-      paths:
-      - backend:
-          service:
-            name: svc-konga
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
+    - http:
+      {{ if .Values.ingress.konga_host }}
+      host: {{ .Values.ingress.konga_host }}
+      {{ end }}
+        paths:
+          - backend:
+              service:
+                name: svc-konga
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
