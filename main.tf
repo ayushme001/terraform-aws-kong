@@ -409,7 +409,14 @@ resource "helm_release" "kong" {
     name  = "ingress.subnet"
     value = "${join("\\,", var.subnet_ids)}"
   }
-
+  set {
+    name  = "ingress.kong-sg"
+    value = "${var.kong_sg}"
+  }
+  set {
+    name  = "ingress.kong-host"
+    value = "${var.kong_host}"
+  }
   values = [
     "${file("${path.module}/helm/kong-values.yaml")}"
   ]
@@ -450,6 +457,14 @@ resource "helm_release" "konga" {
   set {
     name  = "ingress.subnet"
     value = "${join("\\,", var.subnet_ids)}"
+  }
+  set {
+    name  = "ingress.kong-sg"
+    value = "${var.konga_sg}"
+  }
+  set {
+    name  = "ingress.konga-host"
+    value = "${var.konga_host}"
   }
   values = [
     "${file("${path.module}/helm/konga-values.yaml")}"
