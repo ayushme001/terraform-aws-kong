@@ -378,7 +378,7 @@ resource "helm_release" "kong" {
     resource.kubernetes_pod.kong_migration
   ]
   name    = var.kong_release_name
-  timeout = 180
+  timeout = 900
   # namespace   = "default"
   chart = "${path.module}/helm/kong"
   set {
@@ -429,7 +429,7 @@ resource "helm_release" "konga" {
   name = var.konga_release_name
   # namespace   = "default"
   chart   = "${path.module}/helm/konga"
-  timeout = 180
+  timeout = 900
   set {
     name  = "deployment.containers[0].env[1].name"
     value = "DB_HOST"
