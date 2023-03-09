@@ -11,15 +11,19 @@ metadata:
     alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnet }}
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     # alb.ingress.kubernetes.io/healthcheck-port: 80
+    {{ if .Values.ingress.kong_sg }}
     alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.kong_sg }}
+    {{ end }}
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
 spec:
   rules:
+    {{ if .Values.ingress.kong_host }}
+    - host: {{ .Values.ingress.kong_host }}
+      http:
+    {{ else }}
     - http:
-      {{ if .Values.ingress.kong_host }}
-      host: {{ .Values.ingress.kong_host }}
-      {{ end }}
+    {{ end }}
         paths:
           - path: /
             pathType: Prefix

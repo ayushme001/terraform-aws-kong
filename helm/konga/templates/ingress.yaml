@@ -6,7 +6,9 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnet }}
+    {{ if .Values.ingress.konga_sg }}
     alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.konga_sg }}
+    {{ end }}
     alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
     meta.helm.sh/release-name: helm-ing
