@@ -15,7 +15,8 @@ metadata:
     alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.kong_sg }}
     {{ end }}
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.acm_arn }}
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 443}]'
 spec:
   rules:
     {{ if .Values.ingress.kong_host }}

@@ -64,3 +64,8 @@ variable "konga_host" {
   description = "The Host name for konga"
   type        = string
 }
+
+variable "acm_arn" {
+  description = "ACM ARN of the domain"
+  type        = string
+}

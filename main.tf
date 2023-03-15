@@ -417,6 +417,10 @@ resource "helm_release" "kong" {
     name  = "ingress.kong_host"
     value = "${var.kong_host}"
   }
+  set {
+    name  = "ingress.acm_arn"
+    value = "${var.acm_arn}"
+  }
   values = [
     "${file("${path.module}/helm/kong-values.yaml")}"
   ]
@@ -461,6 +465,10 @@ resource "helm_release" "konga" {
   set {
     name  = "ingress.konga_sg"
     value = "${var.konga_sg}"
+  }
+  set {
+    name  = "ingress.acm_arn"
+    value = "${var.acm_arn}"
   }
   set {
     name  = "ingress.konga_host"
