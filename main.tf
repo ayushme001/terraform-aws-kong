@@ -414,10 +414,6 @@ resource "helm_release" "kong" {
     value = "${var.kong_sg}"
   }
   set {
-    name  = "ingress.kong_host"
-    value = "${var.kong_host}"
-  }
-  set {
     name  = "ingress.acm_arn"
     value = "${var.acm_arn}"
   }

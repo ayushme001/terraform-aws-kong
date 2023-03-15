@@ -19,12 +19,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
 spec:
   rules:
-    {{ if .Values.ingress.kong_host }}
-    - host: {{ .Values.ingress.kong_host }}
-      http:
-    {{ else }}
     - http:
-    {{ end }}
         paths:
           - path: /
             pathType: Prefix

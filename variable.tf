@@ -55,11 +55,6 @@ variable "konga_sg" {
   type        = string
 }
 
-variable "kong_host" {
-  description = "The Host name for kong"
-  type        = string
-}
-
 variable "konga_host" {
   description = "The Host name for konga"
   type        = string
