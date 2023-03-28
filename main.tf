@@ -526,14 +526,14 @@ resource "helm_release" "konga" {
 #   }
 # }
 
-provider "postgresql" {
-  host            = var.rds_endpoint
-  port            = var.rds_port
-  database        = "postgres"
-  username        = var.rds_username
-  password        = var.rds_password
-  connect_timeout = 15
-}
+# provider "postgresql" {
+#   host            = var.rds_endpoint
+#   port            = var.rds_port
+#   database        = "postgres"
+#   username        = var.rds_username
+#   password        = var.rds_password
+#   connect_timeout = 15
+# }
 
 resource "postgresql_database" "kong" {
   # depends_on = [
