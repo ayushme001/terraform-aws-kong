@@ -4,19 +4,16 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/healthcheck-path: /health
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.acm_arn }}
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80},{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 8080}]'
+    alb.ingress.kubernetes.io/group.name: "kong-ingress"
     alb.ingress.kubernetes.io/subnets: {{ .Values.ingress.subnet }}
-    {{ if .Values.ingress.konga_sg }}
-    alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.konga_sg }}
+    {{ if .Values.ingress.kong_sg }}
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.ingress.kong_sg }}
     {{ end }}
     alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
     meta.helm.sh/release-name: helm-ing
     meta.helm.sh/release-namespace: {{ $.Release.Namespace }}
-  finalizers:
-  - ingress.k8s.aws/resources
-  generation: 7
   labels:
     app.kubernetes.io/managed-by: Helm
   name: {{ .Values.ingress.ingName }}-ingress
